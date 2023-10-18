@@ -1,0 +1,18 @@
+{
+    "id": 9102023,
+    "category": {
+        "id": 0,
+        "name": "string"
+    },
+    "name": "Spike",
+    "photoUrls": [
+        "string"
+    ],
+    "tags": [
+        {
+            "id": 0,
+            "name": "string"
+        }
+    ],
+    "status": "available"
+}
