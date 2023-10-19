@@ -2,16 +2,23 @@ using models;
 using Newtonsoft.Json;
 using RestSharp;
 
-namespace Hamburguer;
+namespace tests;
 
 public class PetTest
 {
     private const String BASE_URL = "https://petstore.swagger.io/v2/";
 
+    private RestClient client;
+    [SetUp]
+    public void SetUp()
+    {
+        client = new RestClient(BASE_URL);
+    }
+
     [Test, Order(1)]
     public void PostPetTest()
     {
-        var client = new RestClient(BASE_URL);
+        // var client = new RestClient(BASE_URL);
         var request = new RestRequest("pet", Method.Post);
 
         String jsonBody = File.ReadAllText(@"C:\testspace\PetStore139\fixtures\pet1.json");
@@ -34,7 +41,7 @@ public class PetTest
         // int petId = 9102023;
         String petName = "Spike";
 
-        var client = new RestClient(BASE_URL);
+        // var client = new RestClient(BASE_URL);
         var request = new RestRequest($"pet/{Environment.GetEnvironmentVariable("petId")}", Method.Get);
         var response = client.Execute(request);
         var responseBody = JsonConvert.DeserializeObject<dynamic>(response.Content);
@@ -62,7 +69,7 @@ public class PetTest
         String jsonString = JsonConvert.SerializeObject(petModel, Formatting.Indented);
         Console.WriteLine(jsonString);
 
-        var client = new RestClient(BASE_URL);
+        // var client = new RestClient(BASE_URL);
         var request = new RestRequest("pet", Method.Put);
         request.AddBody(jsonString);
 
@@ -80,7 +87,7 @@ public class PetTest
     {
         int petId = Int32.Parse(Environment.GetEnvironmentVariable("petId"));
 
-        var client = new RestClient(BASE_URL);
+        // var client = new RestClient(BASE_URL);
         var request = new RestRequest($"pet/{petId}", Method.Delete);
         var response = client.Execute(request);
         var responseBody = JsonConvert.DeserializeObject<dynamic>(response.Content);
