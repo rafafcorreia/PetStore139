@@ -13,35 +13,19 @@ public class PetTest
     {
         String caminhoMassa = @"C:\testspace\PetStore139\fixtures\pet.csv";
 
-        /* switch (operacao)
+        using var reader = new StreamReader(caminhoMassa);
+
+        // Pula a primeira linha com os cabeçahos
+        reader.ReadLine();
+
+        while (!reader.EndOfStream)
         {
-            case 1:
-                caminhoMassa = @"C:\testspace\nunit-projeto\Calculadora.Tests\fixtures\massaSomar.csv";
-                break;
-            case 2:
-                caminhoMassa = @"C:\testspace\nunit-projeto\Calculadora.Tests\fixtures\massaSubtrair.csv";
-                break;
-            case 3:
-                caminhoMassa = @"C:\testspace\nunit-projeto\Calculadora.Tests\fixtures\massaMultiplicar.csv";
-                break;
-            case 4:
-                caminhoMassa = @"C:\testspace\nunit-projeto\Calculadora.Tests\fixtures\massaDividir.csv";
-                break;
-        } */
+            var line = reader.ReadLine();
+            var values = line.Split(", ");
 
-        using (var reader = new StreamReader(caminhoMassa))
-        {
-            // Pula a primeira linha com os cabeçahos
-            reader.ReadLine();
-
-            while (!reader.EndOfStream)
-            {
-                var line = reader.ReadLine();
-                var values = line.Split(", ");
-
-                yield return new TestCaseData(int.Parse(values[0]), int.Parse(values[1]), values[2], values[3], values[4], values[5], values[6], values[7]);
-            }
+            yield return new TestCaseData(int.Parse(values[0]), int.Parse(values[1]), values[2], values[3], values[4], values[5], values[6], values[7]);
         }
+
     }
 
     private RestClient client;
@@ -157,7 +141,7 @@ public class PetTest
         {
             int tagId = int.Parse(tagsIdsList[i]);
             String tagName = tagsNamesList[i];
-            
+
             Tag tag = new Tag(tagId, tagName);
             tagsList.Add(tag);
         }
