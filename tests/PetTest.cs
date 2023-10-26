@@ -8,6 +8,7 @@ namespace tests;
 public class PetTest
 {
     private const String BASE_URL = "https://petstore.swagger.io/v2/";
+    private RestClient client;
 
     public static IEnumerable<TestCaseData> getTestData()
     {
@@ -28,7 +29,6 @@ public class PetTest
 
     }
 
-    private RestClient client;
     [SetUp]
     public void SetUp()
     {
@@ -53,6 +53,9 @@ public class PetTest
         Assert.That(status, Is.EqualTo("available"));
         int petId = responseBody.id;
         Environment.SetEnvironmentVariable("petId", petId.ToString());
+        String exemplo = "abc:123";
+        String token = exemplo.Substring(exemplo.LastIndexOf(":") + 1);
+        Console.WriteLine("TOKEN: " + token);
     }
 
     [Test, Order(2)]
@@ -157,7 +160,29 @@ public class PetTest
         Assert.That((int)response.StatusCode, Is.EqualTo(200));
         String respStatus = responseBody.status;
         Assert.That(respStatus, Is.EqualTo(status));
+        Assert.That((int)responseBody.id, Is.EqualTo(petId));
+        Assert.That((String)responseBody.name, Is.EqualTo(petName));
         // int petId = responseBody.id;
         // Environment.SetEnvironmentVariable("petId", petId.ToString());
+    }
+
+    [Test, Order(6)]
+    public void GetUserLogin()
+    {
+        String username = "Fulano";
+        String password = "Senha123";
+        var request = new RestRequest($"user/login?username={username}&password={password}");
+
+        var response = client.Execute(request);
+
+        var responseBody = JsonConvert.DeserializeObject<dynamic>(response.Content);
+        
+        Assert.That((int)response.StatusCode, Is.EqualTo(200));
+
+        String token = responseBody.message;
+        token = token.Substring(token.LastIndexOf(":") + 1);
+        Console.WriteLine("Token: " + token);
+        Environment.SetEnvironmentVariable("token", token);
+
     }
 }
