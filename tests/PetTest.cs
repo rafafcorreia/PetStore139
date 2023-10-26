@@ -171,7 +171,9 @@ public class PetTest
     {
         String username = "Fulano";
         String password = "Senha123";
-        var request = new RestRequest($"user/login?username={username}&password={password}");
+        var request = new RestRequest($"user/login");
+        request.AddParameter("username", username);
+        request.AddParameter("password", password);
 
         var response = client.Execute(request);
 
